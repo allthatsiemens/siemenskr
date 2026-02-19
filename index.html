@@ -4,615 +4,214 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Technical Forum Community | Categories</title>
-  <style>
-    :root{
-      --nav:#0a1a3a;
-      --nav2:#08132c;
-      --mint:#00e6c3;
-      --bg:#ffffff;
-      --soft:#f4f6f8;
-      --line:#e6eaef;
-      --text:#0f172a;
-      --muted:#637083;
-      --link:#0b6cff;
-      --chip:#eef6ff;
-      --btn:#00e6c3;
-      --btnText:#062f2a;
-      --shadow:0 6px 20px rgba(0,0,0,.08);
-      --max:1200px;
-      --radius:10px;
-      --tab:#0c2340;
-    }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
-      color:var(--text);
-      background:var(--bg);
-    }
-    a{color:inherit; text-decoration:none}
-    .container{max-width:var(--max); margin:0 auto; padding:0 22px}
-
-    /* ===== Top global nav (dark) ===== */
-    .topnav{
-      background:linear-gradient(90deg, var(--nav), var(--nav2));
-      color:#fff;
-    }
-    .topnav .row{
-      height:78px;
-      display:flex;
-      align-items:center;
-      gap:18px;
-    }
-    .brand{
-      display:flex; align-items:baseline; gap:10px;
-      font-weight:800; letter-spacing:.3px;
-      min-width:260px;
-    }
-    .brand .siemens{font-size:22px}
-    .brand .portal{font-size:16px; opacity:.85; font-weight:650}
-
-    .menu{
-      display:flex; align-items:center; gap:26px;
-      font-size:15px; font-weight:650;
-      opacity:.95;
-    }
-    .menu a{opacity:.9}
-    .menu a.active{opacity:1; text-decoration:underline; text-underline-offset:10px}
-
-    .top-actions{
-      margin-left:auto;
-      display:flex; align-items:center; gap:14px;
-    }
-
-    .searchbar{
-      display:flex; align-items:center;
-      width:min(560px, 42vw);
-      background:#fff;
-      border-radius:4px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.18);
-    }
-    .searchbar input{
-      border:0; outline:0;
-      width:100%;
-      padding:11px 12px;
-      font-size:14px;
-    }
-    .searchbar button{
-      border:0; cursor:pointer;
-      width:44px; height:40px;color:#062f2a;
-      background:var(--mint);
-      display:grid; place-items:center;
-    }
-    .ico{
-      width:18px; height:18px; display:inline-block;
-      border:2px solid currentColor; border-radius:3px;
-      opacity:.9;
-    }
-    .icon-btn{
-      color:#fff;
-      opacity:.9;
-      display:flex; align-items:center; gap:8px;
-      font-weight:650;
-    }
-
-    /* ===== Mint announcement bar ===== */
-    .announce{
-      background:var(--mint);
-      color:#052b27;
-      font-weight:700;
-    }
-    .announce .row{
-      height:44px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-size:14px;
-    }
-    .announce a{font-weight:800}
-    .announce .left span{font-weight:800; margin-right:14px}
-
-    /* ===== Hero ===== */
-    .hero{
-      background:#f3f5f6;
-      border-bottom:1px solid var(--line);
-    }
-    .hero .row{
-      display:flex;
-      align-items:center;
-      gap:22px;
-      padding:34px 0;
-      min-height:160px;
-    }
-    .hero h1{
-      margin:0;
-      font-size:44px;
-      font-weight:500;
-      letter-spacing:.2px;
-      color:#0b1430;
-    }
-    .hero p{
-      margin:10px 0 0;
-      color:#3c4a5e;
-      font-size:18px;
-    }
-    .hero-right{
-      margin-left:auto;
-      width:320px;
-      height:120px;
-      position:relative;
-      overflow:hidden;
-      border-radius:12px;
-      background:
-        radial-gradient(220px 140px at 35% 50%, rgba(0,230,195,.35), rgba(0,0,0,0) 70%),
-        linear-gradient(135deg, rgba(10,26,58,.08), rgba(10,26,58,.02));
-    }
-    .hero-right:before,
-    .hero-right:after{
-      content:"";
-      position:absolute;
-      width:80px; height:80px;
-      border:16px solid rgba(0,230,195,.9);
-      transform:rotate(45deg);
-      right:24px;
-      top:20px;
-    }
-    .hero-right:after{
-      right:72px;
-      opacity:.55;
-    }
-
-    /* ===== Breadcrumb ===== */
-    .crumb{
-      display:flex; align-items:center; gap:10px;
-      color:var(--muted);
-      font-size:13px;
-      padding:14px 0 8px;
-    }
-    .crumb .sep{opacity:.55}
-
-    /* ===== Tabs & actions row ===== */
-    .tabsRow{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
-      padding:8px 0 14px;
-    }
-    .tabs{
-      display:flex;
-      gap:18px;
-      font-size:18px;
-      font-weight:750;
-    }
-    .tab{
-      padding:12px 0 10px;
-      color:#2c3a50;
-      border-bottom:3px solid transparent;
-      cursor:pointer;
-    }
-    .tab.active{
-      color:var(--tab);
-      border-bottom-color:var(--mint);
-    }
-
-    .rightTools{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .lang{
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .pill{
-      width:38px; height:38px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      display:grid; place-items:center;
-      font-weight:800;
-      color:#22324a;
-      background:#fff;
-      cursor:pointer;
-    }
-    .pill.active{
-      outline:2px solid rgba(0,230,195,.45);
-      border-color:rgba(0,230,195,.6);
-    }
-    .ask{
-      height:42px;
-      padding:0 18px;
-      border:0;
-      border-radius:4px;
-      background:var(--mint);
-      color:var(--btnText);
-      font-weight:900;
-      cursor:pointer;
-    }
-
-    /* ===== Sort row ===== */
-    .sortRow{
-      display:flex;
-      justify-content:flex-end;
-      padding:10px 0 8px;
-      color:var(--muted);
-      font-size:14px;
-      gap:10px;
-      align-items:center;
-    }
-    select{
-      border:0;
-      border-bottom:1px solid var(--muted);
-      background:transparent;
-      padding:6px 2px;
-      font-size:14px;
-      color:#2b3b52;
-      outline:none;
-      cursor:pointer;
-    }
-
-    /* ===== Category list ===== */
-    .filters{
-      display:flex;
-      justify-content:flex-end;
-      gap:26px;
-      color:var(--muted);
-      font-size:14px;
-      padding:6px 0 10px;
-    }
-    .filters .f{cursor:pointer; padding:6px 0; border-bottom:2px solid transparent;}
-    .filters .f.active{border-bottom-color:var(--mint); color:#2b3b52; font-weight:800;}
-
-    .list{
-      border-top:1px solid var(--line);
-    }
-    .catRow{
-      display:grid;
-      grid-template-columns: 64px 1fr 260px;
-      gap:18px;
-      padding:22px 0;
-      border-bottom:1px solid var(--line);
-      align-items:flex-start;
-    }
-    .catIcon{
-      width:52px; height:52px;
-      border-radius:6px;
-      background:#eaf2ff;
-      border:1px solid #d6e6ff;
-      display:grid; place-items:center;
-      color:#2b67c8;
-      font-weight:900;
-    }
-    .catTitle{
-      font-weight:900;
-      font-size:18px;
-      margin:0 0 8px;
-      color:#0b1430;
-    }
-    .subcats{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px 14px;
-      color:var(--link);
-      font-size:13px;
-    }
-    .subcats a{color:var(--link)}
-    .subcats .chev{color:#9aa6b2}
-
-    .stats{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:10px;
-      justify-items:end;
-      color:#2b3b52;
-      font-size:14px;
-    }
-    .stat{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      min-width:72px;
-      justify-content:flex-end;
-    }
-    .bub, .doc, .clk{
-      width:18px; height:18px;
-      border:2px solid #2b3b52;
-      border-radius:4px;
-      opacity:.85;
-      position:relative;
-    }
-    .bub{border-radius:50%}
-    .doc{border-radius:3px}
-    .clk{border-radius:50%}
-    .muted{color:var(--muted)}
-
-    /* ===== All topics panel (simple) ===== */
-    .topicsPanel{display:none;}
-    .topicRow{
-      display:grid;
-      grid-template-columns: 1fr 160px;
-      gap:14px;
-      padding:18px 0;
-      border-bottom:1px solid var(--line);
-    }
-    .topicRow .tTitle{font-weight:850; margin:0}
-    .topicRow .tMeta{margin-top:8px; color:var(--muted); font-size:13px; display:flex; gap:12px; flex-wrap:wrap;}
-    .topicRow .tRight{justify-self:end; color:var(--muted); font-size:13px;}
-
-    /* ===== Responsive ===== */
-    @media (max-width: 980px){
-      .menu{display:none}
-      .searchbar{width:100%}
-      .topnav .row{flex-wrap:wrap; height:auto; padding:12px 0}
-      .brand{min-width:auto; width:100%}
-      .top-actions{margin-left:0; width:100%}
-      .hero .row{flex-direction:column; align-items:flex-start}
-      .hero-right{width:100%; height:110px}
-      .catRow{grid-template-columns: 64px 1fr; }
-      .stats{grid-column: 1 / -1; justify-items:start; grid-template-columns: repeat(3, 1fr); margin-left:64px;}
-      .sortRow, .filters{justify-content:flex-start}
-      .tabsRow{flex-direction:column; align-items:flex-start}
-    }
-    @media (max-width: 520px){
-      .hero h1{font-size:34px}
-      .hero p{font-size:16px}
-      .stats{margin-left:0}
-    }
-  </style>
+  <meta name="description" content="Technical Forum Community - 전문 엔지니어를 위한 기술 포럼 및 커뮤니티입니다." />
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2535043174275075" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- TOP NAV -->
+  <!-- HEADER AREA -->
   <header class="topnav">
-    <div class="container">
-      <div class="row">
-        <div class="brand">
-          <span class="siemens">SIEMENS</span>
-          <span class="portal">Korea Community</span>
+    <div class="container row">
+      <div class="brand" onclick="location.href='/'">SIEMENS</div>
+      <nav class="menu">
+        <a href="#climatix">Climatix</a>
+        <a href="#hvac">HVAC Instrument</a>
+        <a href="#others">기타</a>
+      </nav>
+      <div class="top-actions">
+        <div class="search-mini">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" placeholder="Search support..." />
         </div>
-
-      
-
-        <div class="top-actions">
-          <div class="searchbar" role="search">
-            <input id="q" type="search" placeholder="Search for Products, Services, Topics, ..." />
-            <button type="button" aria-label="Search">
-  <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" fill="none" stroke="currentColor" stroke-width="2"/>
-    <path d="M16.5 16.5 21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  </svg>
-</button>
-          </div>
-
-          
-          <a class="icon-btn" href="/community/login" title="Login">
-            
-            Login
-          </a>
-        </div>
+        <div style="cursor:pointer; font-size:14px; font-weight:500;">Login</div>
       </div>
     </div>
   </header>
 
-  <!-- ANNOUNCEMENT BAR -->
-  <div class="announce">
-    <div class="container">
-      <div class="row">
-        <div class="left">
-          <span>Forum Community</span>
-          Welcome to our new and improved user interface
-        </div>
-        <a href="/community/classic">↗ Back to classic Forum (logged in Users)</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- HERO -->
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="container">
-      <div class="row">
-        <div>
-          <h1>Technical Forum Community</h1>
-          <p>Find answers, ask questions and connect with your Community</p>
-        </div>
-        <div class="hero-right" aria-hidden="true"></div>
+      <h1>한국지멘스 커뮤니티 포럼 <span class="stats-count">(102)</span></h1>
+      
+      <div class="hero-search">
+        <input type="text" placeholder="Search the community for answers..." />
+        <button>Search</button>
       </div>
     </div>
   </section>
 
-  <!-- CONTENT -->
+  <!-- ADSENSE TOP -->
+  <div class="container" style="text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2535043174275075"
+         data-ad-slot="default"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- TOOLBAR (Tabs & Ask Button) -->
+  <div class="toolbar">
+    <div class="container row">
+      <div class="tabs">
+        <div class="tab active">Categories</div>
+        <div class="tab">All topics</div>
+      </div>
+      <div class="actions-right">
+        <button class="btn-primary">Ask the Community</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
   <main class="container">
-    <div class="crumb">
-      <span>⌂</span><span class="sep">›</span>
-      <span>Support</span><span class="sep">›</span>
-      <span>Forum</span>
-    </div>
-
-    <div class="tabsRow">
-      <div class="tabs" role="tablist" aria-label="Forum tabs">
-        <div class="tab active" id="tabCategories" role="tab" aria-selected="true">Categories</div>
-        <div class="tab" id="tabTopics" role="tab" aria-selected="false">All topics</div>
+    
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-info">
+        <span style="font-weight:700; font-size:14px;">Filter by:</span>
+        <div class="tag">All Categories <span>×</span></div>
+        <a href="#" style="font-size:14px; color:var(--link-color); text-decoration:underline; font-weight:700;">Clear all</a>
       </div>
-
-      <div class="rightTools">
-        <div class="lang" aria-label="Language">
-          <div class="pill active" data-lang="EN">EN</div>
-          <div class="pill" data-lang="DE">DE</div>
-        </div>
-        <button class="ask" type="button" onclick="location.href='/community/new-topic'">Ask the Community</button>
+      <div style="font-size:14px; color:var(--text-muted);">
+        Sort by: 
+        <select style="border:1px solid var(--border-color); padding:8px 12px; border-radius:2px; margin-left:8px;">
+          <option>Default</option>
+          <option>A-Z</option>
+          <option>Most Topics</option>
+        </select>
       </div>
     </div>
 
-    <div class="sortRow">
-      <span>Sort by</span>
-      <select id="sort">
-        <option value="default" selected>Default</option>
-        <option value="az">A → Z</option>
-        <option value="topics">Most topics</option>
-        <option value="recent">Latest activity</option>
-      </select>
-    </div>
-
-    <div class="filters" aria-label="Quick filters">
-      <div class="f active" data-filter="all">All</div>
-      <div class="f" data-filter="current">Current</div>
-      <div class="f" data-filter="latest">Latest</div>
-    </div>
-
-    <!-- Categories panel -->
-    <section id="categoriesPanel" class="list" aria-label="Categories">
-      <a class="catRow" href="/community/c/climatix" data-name="Climatix" data-topics="128" data-activity="2026-02-16">
-        <div class="catIcon">C</div>
-        <div>
-          <div class="catTitle">Climatix</div>
-          <div class="subcats">
-            <span class="chev">›</span><a href="/community/c/climatix/c600">Climatix C600</a>
-            <span class="chev">›</span><a href="/community/c/climatix/sapro">SAPRO</a>
-            <span class="chev">›</span><a href="/community/c/climatix/bacnet">BACnet</a>
-            <span class="chev">›</span><a href="/community/c/climatix/modbus">Modbus</a>
+    <!-- Category List -->
+    <section class="cat-list">
+      
+      <!-- Category 1: Climatix -->
+      <div class="cat-item" id="climatix">
+        <div class="cat-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <div class="cat-body">
+          <h3>Climatix (클라이매틱스)</h3>
+          <p>고성능 HVAC 컨트롤러 Climatix 시리즈에 대한 기술 지원 및 프로그래밍 가이드, 라이브러리를 제공합니다. SAPRO, BACnet 연동 및 통신 설정에 관한 노하우를 확인하세요.</p>
+          <div class="cat-tags">
+            <a href="#">Climatix C600</a>
+            <a href="#">SAPRO</a>
+            <a href="#">BACnet</a>
+            <a href="#">Modbus</a>
+            <a href="#">Cloud SAPRO</a>
           </div>
         </div>
-        <div class="stats" aria-label="Stats">
-          <div class="stat"><span class="bub"></span><strong>12.4k</strong></div>
-          <div class="stat"><span class="doc"></span><strong>128</strong></div>
-          <div class="stat"><span class="clk"></span><strong>1 hour ago</strong></div>
+        <div class="cat-stats">
+          <div class="stat-box"><span class="data-val">12,432</span> <span class="stat-label">REPLIES</span></div>
+          <div class="stat-box"><span class="data-val">128</span> <span class="stat-label">TOPICS</span></div>
+          <div class="stat-box"><span class="data-val">1h ago</span> <span class="stat-label">LAST POST</span></div>
         </div>
-      </a>
+      </div>
 
-      <a class="catRow" href="/community/c/hvac-instrument" data-name="HVAC instrument" data-topics="92" data-activity="2026-02-15">
-        <div class="catIcon">H</div>
-        <div>
-          <div class="catTitle">HVAC instrument</div>
-          <div class="subcats">
-            <span class="chev">›</span><a href="/community/c/hvac-instrument/valves">Valves / PICV</a>
-            <span class="chev">›</span><a href="/community/c/hvac-instrument/sensors">Sensors</a>
-            <span class="chev">›</span><a href="/community/c/hvac-instrument/actuators">Actuators</a>
-            <span class="chev">›</span><a href="/community/c/hvac-instrument/calibration">Calibration</a>
+      <!-- Category 2: HVAC Instrument -->
+      <div class="cat-item" id="hvac">
+        <div class="cat-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.7a6 6 0 0 1-8.3 8.3l-3.58 3.54a2 2 0 1 1-2.83-2.83l3.54-3.58a6 6 0 0 1 8.3-8.3l-3.7 3.77Z"></path></svg>
+        </div>
+        <div class="cat-body">
+          <h3>HVAC Instrument (현장 기기)</h3>
+          <p>밸브, 액추에이터, 센서 등 HVAC 현장 기기의 설치, 교정 및 유지보수 정보를 공유합니다. 시스템 효율을 극대화하기 위한 정밀 계측 기기 활용법을 논의합니다.</p>
+          <div class="cat-tags">
+            <a href="#">Valves / PICV</a>
+            <a href="#">Sensors</a>
+            <a href="#">Actuators</a>
+            <a href="#">Calibration</a>
+            <a href="#">Installation</a>
           </div>
         </div>
-        <div class="stats">
-          <div class="stat"><span class="bub"></span><strong>8.6k</strong></div>
-          <div class="stat"><span class="doc"></span><strong>92</strong></div>
-          <div class="stat"><span class="clk"></span><strong>2 minutes ago</strong></div>
+        <div class="cat-stats">
+          <div class="stat-box"><span class="data-val">8,610</span> <span class="stat-label">REPLIES</span></div>
+          <div class="stat-box"><span class="data-val">92</span> <span class="stat-label">TOPICS</span></div>
+          <div class="stat-box"><span class="data-val">2m ago</span> <span class="stat-label">LAST POST</span></div>
         </div>
-      </a>
+      </div>
 
-      <a class="catRow" href="/community/c/others" data-name="기타" data-topics="56" data-activity="2026-02-14">
-        <div class="catIcon">기</div>
-        <div>
-          <div class="catTitle">기타</div>
-          <div class="subcats">
-            <span class="chev">›</span><a href="/community/c/others/notice">공지</a>
-            <span class="chev">›</span><a href="/community/c/others/templates">템플릿</a>
-            <span class="chev">›</span><a href="/community/c/others/requests">요청/개선</a>
-            <span class="chev">›</span><a href="/community/c/others/rules">규칙</a>
+      <!-- Category 3: Community -->
+      <div class="cat-item" id="others">
+        <div class="cat-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        </div>
+        <div class="cat-body">
+          <h3>기타 (커뮤니티 운영)</h3>
+          <p>포럼 공지사항, 이용 규칙 및 서비스 개선 요청을 위한 공간입니다. 깨끗하고 전문적인 기술 공유 문화를 만들기 위해 지켜야 할 가이드를 안내합니다.</p>
+          <div class="cat-tags">
+            <a href="#">Notice</a>
+            <a href="#">Templates</a>
+            <a href="#">Requests</a>
+            <a href="#">Rules</a>
           </div>
         </div>
-        <div class="stats">
-          <div class="stat"><span class="bub"></span><strong>3.1k</strong></div>
-          <div class="stat"><span class="doc"></span><strong>56</strong></div>
-          <div class="stat"><span class="clk"></span><strong>yesterday</strong></div>
+        <div class="cat-stats">
+          <div class="stat-box"><span class="stat-val">3,105</span> <span class="stat-label">REPLIES</span></div>
+          <div class="stat-box"><span class="stat-val">56</span> <span class="stat-label">TOPICS</span></div>
+          <div class="stat-box"><span class="stat-val">Yesterday</span> <span class="stat-label">LAST POST</span></div>
         </div>
-      </a>
+      </div>
+
     </section>
 
-    <!-- Topics panel -->
-    <section id="topicsPanel" class="topicsPanel list" aria-label="All topics">
-      <div class="topicRow">
-        <div>
-          <p class="tTitle">[Climatix] C600 alarm handling pattern</p>
-          <div class="tMeta"><span class="muted">Category:</span> Climatix <span class="muted">Replies:</span> 8 <span class="muted">Updated:</span> Feb 16, 2026</div>
-        </div>
-        <div class="tRight">Latest</div>
-      </div>
-      <div class="topicRow">
-        <div>
-          <p class="tTitle">[Instrument] DP sensor range (-1~24bar)</p>
-          <div class="tMeta"><span class="muted">Category:</span> HVAC instrument <span class="muted">Replies:</span> 5 <span class="muted">Updated:</span> Feb 15, 2026</div>
-        </div>
-        <div class="tRight">Current</div>
-      </div>
-      <div class="topicRow">
-        <div>
-          <p class="tTitle">[기타] Posting template & rules</p>
-          <div class="tMeta"><span class="muted">Category:</span> 기타 <span class="muted">Replies:</span> 2 <span class="muted">Updated:</span> Feb 14, 2026</div>
-        </div>
-        <div class="tRight">All</div>
-      </div>
-    </section>
+    <!-- ADSENSE BOTTOM SLOT -->
+    <div style="margin: 64px 0; text-align: center;">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2535043174275075"
+           data-ad-slot="default"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
 
-    <div style="height:32px"></div>
   </main>
 
-  <script>
-    // Tabs
-    const tabCategories = document.getElementById('tabCategories');
-    const tabTopics = document.getElementById('tabTopics');
-    const categoriesPanel = document.getElementById('categoriesPanel');
-    const topicsPanel = document.getElementById('topicsPanel');
+  <!-- FOOTER AREA -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 style="color:#fff; font-size:20px;">Technical Forum</h4>
+          <p style="opacity:0.6; font-size:14px; line-height:1.8;">엔지니어들의 지식 공유를 통해 더 나은 기술 환경을 만들어갑니다. Siemens Support 포럼에 참여하여 전문가들과 소통하세요.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Support & Service</h4>
+          <ul>
+            <li><a href="#">Support Request</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Software Downloads</a></li>
+            <li><a href="#">Manuals</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Guidelines</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Siemens AG. Technical Forum Community Support Portal.</div>
+        <div>Language: English (US) / Korean (KR)</div>
+      </div>
+    </div>
+  </footer>
 
-    function setTab(which){
-      const isCat = which === 'cat';
-      tabCategories.classList.toggle('active', isCat);
-      tabTopics.classList.toggle('active', !isCat);
-      tabCategories.setAttribute('aria-selected', String(isCat));
-      tabTopics.setAttribute('aria-selected', String(!isCat));
-      categoriesPanel.style.display = isCat ? 'block' : 'none';
-      topicsPanel.style.display = isCat ? 'none' : 'block';
-    }
-    tabCategories.addEventListener('click', ()=>setTab('cat'));
-    tabTopics.addEventListener('click', ()=>setTab('topics'));
-    setTab('cat');
-
-    // Language pills (demo)
-    document.querySelectorAll('.pill').forEach(p=>{
-      p.addEventListener('click', ()=>{
-        document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
-        p.classList.add('active');
-      });
-    });
-
-    // Search filter (categories only)
-    const q = document.getElementById('q');
-    q.addEventListener('input', ()=>{
-      const term = (q.value||'').trim().toLowerCase();
-      document.querySelectorAll('#categoriesPanel .catRow').forEach(row=>{
-        const text = row.innerText.toLowerCase();
-        row.style.display = (!term || text.includes(term)) ? 'grid' : 'none';
-      });
-    });
-
-    // Sort (categories)
-    const sort = document.getElementById('sort');
-    sort.addEventListener('change', ()=>{
-      const list = categoriesPanel;
-      const rows = [...list.querySelectorAll('.catRow')];
-      let sorted = rows;
-
-      if(sort.value === 'az'){
-        sorted = rows.sort((a,b)=>a.dataset.name.localeCompare(b.dataset.name));
-      } else if(sort.value === 'topics'){
-        sorted = rows.sort((a,b)=>Number(b.dataset.topics)-Number(a.dataset.topics));
-      } else if(sort.value === 'recent'){
-        sorted = rows.sort((a,b)=>(b.dataset.activity||'').localeCompare(a.dataset.activity||''));
-      } else {
-        sorted = rows; // leave as is
-      }
-      sorted.forEach(r=>list.appendChild(r));
-    });
-
-    // Quick filters (demo)
-    document.querySelectorAll('.filters .f').forEach(f=>{
-      f.addEventListener('click', ()=>{
-        document.querySelectorAll('.filters .f').forEach(x=>x.classList.remove('active'));
-        f.classList.add('active');
-        // demo only: no real filtering rules yet
-      });
-    });
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
