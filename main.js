@@ -26,11 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const questionStatus = document.getElementById('questionStatus');
   const questionList = document.getElementById('questionList');
   const questionEmptyState = document.getElementById('questionEmptyState');
+  const forumQuestionList = document.getElementById('forumQuestionList');
+  const forumQuestionEmptyState = document.getElementById('forumQuestionEmptyState');
+  const forumSortSelect = document.querySelector('.forum-content .sort-wrap select');
+  const questionCategoryField = document.getElementById('questionCategory');
 
   const GOOGLE_CLIENT_ID = body.dataset.googleClientId;
+  const CURRENT_FORUM_CATEGORY = body.dataset.forumCategory || '';
   const AUTH_API_ENDPOINT = '/api/auth/google';
   const USER_STORAGE_KEY = 'siemenskr_google_user';
   const QUESTION_STORAGE_KEY = 'siemenskr_member_questions';
+  const CATEGORY_BY_SECTION_ID = {
+    climatix: 'Climatix',
+    hvac: 'HVAC Instrument',
+    datasheet: 'Data Sheet(기술자료)',
+    others: '기타'
+  };
 
   let currentUser = null;
   let pendingProtectedAction = null;
@@ -68,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadQuestions = () => {
     try {
       const raw = localStorage.getItem(QUESTION_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed.filter((item) => item && item.category && item.title && item.content) : [];
     } catch (error) {
       console.error('Failed to parse question state', error);
       return [];
@@ -78,6 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveQuestions = (questions) => {
     localStorage.setItem(QUESTION_STORAGE_KEY, JSON.stringify(questions));
   };
+
+  const escapeHtml = (value = '') => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
   const formatDateTime = (value) => {
     try {
@@ -93,9 +112,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const renderQuestions = () => {
+  const formatRelativeTime = (value) => {
+    if (!value) return '아직 없음';
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '아직 없음';
+
+    const diffMs = Date.now() - date.getTime();
+    const diffMinutes = Math.max(0, Math.floor(diffMs / 60000));
+
+    if (diffMinutes < 1) return '방금 전';
+    if (diffMinutes < 60) return `${diffMinutes}분 전`;
+
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) return `${diffHours}시간 전`;
+
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffDays === 1) return '어제';
+    if (diffDays < 7) return `${diffDays}일 전`;
+
+    return formatDateTime(value);
+  };
+
+  const getSortedQuestions = (questions, sortType = 'latest') => {
+    const cloned = [...questions];
+
+    if (sortType === 'oldest') {
+      return cloned.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    }
+
+    if (sortType === 'a-z') {
+      return cloned.sort((a, b) => String(a.title).localeCompare(String(b.title), 'ko'));
+    }
+
+    if (sortType === 'most-replies') {
+      return cloned.sort((a, b) => Number(b.replyCount || 0) - Number(a.replyCount || 0));
+    }
+
+    return cloned.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  };
+
+  const getCategoryQuestions = (category) => loadQuestions().filter((question) => question.category === category);
+
+  const getCategoryStats = (category) => {
+    const questions = getCategoryQuestions(category);
+    const latestQuestion = getSortedQuestions(questions, 'latest')[0] || null;
+
+    return {
+      topics: questions.length,
+      replies: questions.reduce((total, question) => total + Number(question.replyCount || 0), 0),
+      latestQuestion
+    };
+  };
+
+  const buildCommunityQuestionCard = (question) => `
+    <article class="question-card">
+      <div class="question-card-meta">
+        <span class="question-category">${escapeHtml(question.category)}</span>
+        <span class="question-date">${escapeHtml(formatDateTime(question.createdAt))}</span>
+      </div>
+      <h3>${escapeHtml(question.title)}</h3>
+      <p>${escapeHtml(question.content)}</p>
+      <div class="question-author-row">
+        <img src="${escapeHtml(question.authorPicture || 'https://www.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png')}" alt="${escapeHtml(question.authorName || '사용자')} 프로필" referrerpolicy="no-referrer">
+        <div>
+          <strong>${escapeHtml(question.authorName || 'Siemens User')}</strong>
+          <span>${escapeHtml(question.authorEmail || '')}</span>
+        </div>
+      </div>
+    </article>
+  `;
+
+  const buildForumTopicCard = (question, index) => `
+    <article class="topic-card ${index === 0 ? 'featured-topic-card' : ''}">
+      <div class="topic-card-top">
+        <span class="topic-status is-open">Open</span>
+        <span class="topic-updated">Updated ${escapeHtml(formatRelativeTime(question.createdAt))}</span>
+      </div>
+      <h3>${escapeHtml(question.title)}</h3>
+      <p>${escapeHtml(question.content)}</p>
+      <div class="topic-meta-row">
+        <span>작성자: ${escapeHtml(question.authorName || 'Siemens User')}</span>
+        <span>이메일: ${escapeHtml(question.authorEmail || '-')}</span>
+        <span>Replies: ${Number(question.replyCount || 0)}</span>
+      </div>
+    </article>
+  `;
+
+  const renderCommunityQuestions = () => {
     if (!questionList || !questionEmptyState) return;
-    const questions = loadQuestions();
+    const questions = getSortedQuestions(loadQuestions(), 'latest');
     questionList.innerHTML = '';
 
     if (!questions.length) {
@@ -104,27 +210,93 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     questionEmptyState.classList.add('is-hidden');
+    questionList.innerHTML = questions.map(buildCommunityQuestionCard).join('');
+  };
 
-    questions.forEach((question) => {
-      const article = document.createElement('article');
-      article.className = 'question-card';
-      article.innerHTML = `
-        <div class="question-card-meta">
-          <span class="question-category">${question.category}</span>
-          <span class="question-date">${formatDateTime(question.createdAt)}</span>
-        </div>
-        <h3>${question.title}</h3>
-        <p>${question.content}</p>
-        <div class="question-author-row">
-          <img src="${question.authorPicture || 'https://www.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png'}" alt="${question.authorName} 프로필" referrerpolicy="no-referrer">
-          <div>
-            <strong>${question.authorName}</strong>
-            <span>${question.authorEmail}</span>
-          </div>
-        </div>
-      `;
-      questionList.appendChild(article);
+  const updateHomepageCategoryStats = () => {
+    document.querySelectorAll('.cat-item').forEach((card) => {
+      const category = CATEGORY_BY_SECTION_ID[card.id];
+      if (!category) return;
+
+      const stats = getCategoryStats(category);
+      const values = card.querySelectorAll('.cat-stats .data-val');
+      const labels = card.querySelectorAll('.cat-stats .stat-label');
+
+      if (values[0]) values[0].textContent = stats.replies.toLocaleString('en-US');
+      if (labels[0]) labels[0].textContent = 'REPLIES';
+      if (values[1]) values[1].textContent = stats.topics.toLocaleString('en-US');
+      if (labels[1]) labels[1].textContent = 'TOPICS';
+      if (values[2]) values[2].textContent = formatRelativeTime(stats.latestQuestion?.createdAt);
+      if (labels[2]) labels[2].textContent = 'LAST UPDATE';
     });
+  };
+
+  const renderForumCategoryPage = () => {
+    if (!CURRENT_FORUM_CATEGORY || !forumQuestionList || !forumQuestionEmptyState) return;
+
+    const selectedSort = forumSortSelect?.value || 'Latest activity';
+    const sortType = selectedSort === 'A-Z'
+      ? 'a-z'
+      : selectedSort === 'Most replies'
+        ? 'most-replies'
+        : selectedSort === 'Oldest activity'
+          ? 'oldest'
+          : 'latest';
+
+    const questions = getSortedQuestions(getCategoryQuestions(CURRENT_FORUM_CATEGORY), sortType);
+    forumQuestionList.innerHTML = '';
+
+    if (!questions.length) {
+      forumQuestionEmptyState.classList.remove('is-hidden');
+    } else {
+      forumQuestionEmptyState.classList.add('is-hidden');
+      forumQuestionList.innerHTML = questions.map(buildForumTopicCard).join('');
+    }
+
+    const titleNode = document.getElementById('currentTopicsTitle');
+    if (titleNode) {
+      titleNode.textContent = `${CURRENT_FORUM_CATEGORY} Questions`;
+    }
+  };
+
+  const updateForumHeroStats = () => {
+    if (!CURRENT_FORUM_CATEGORY) return;
+
+    const stats = getCategoryStats(CURRENT_FORUM_CATEGORY);
+    const cards = document.querySelectorAll('.forum-hero-stats .forum-stat-card');
+
+    if (cards[0]) {
+      const strong = cards[0].querySelector('strong');
+      const label = cards[0].querySelector('span');
+      if (strong) strong.textContent = stats.topics.toLocaleString('en-US');
+      if (label) label.textContent = 'Total Topics';
+    }
+
+    if (cards[1]) {
+      const strong = cards[1].querySelector('strong');
+      const label = cards[1].querySelector('span');
+      if (strong) strong.textContent = stats.replies.toLocaleString('en-US');
+      if (label) label.textContent = 'Total Replies';
+    }
+
+    if (cards[2]) {
+      const strong = cards[2].querySelector('strong');
+      const label = cards[2].querySelector('span');
+      if (strong) strong.textContent = formatRelativeTime(stats.latestQuestion?.createdAt);
+      if (label) label.textContent = 'Last Update';
+    }
+
+    const overviewRecentActivity = document.querySelector('.forum-side-list li:last-child strong');
+    if (overviewRecentActivity) {
+      overviewRecentActivity.textContent = formatRelativeTime(stats.latestQuestion?.createdAt);
+    }
+  };
+
+  const refreshQuestionDrivenUI = () => {
+    renderCommunityQuestions();
+    updateHomepageCategoryStats();
+    updateForumHeroStats();
+    renderForumCategoryPage();
   };
 
   const openAuthModal = (message = 'Google 계정으로 로그인해 주세요.', state = 'default') => {
@@ -146,6 +318,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setQuestionStatus('', 'default');
     if (questionForm) {
       questionForm.reset();
+    }
+    if (questionCategoryField && CURRENT_FORUM_CATEGORY) {
+      questionCategoryField.value = CURRENT_FORUM_CATEGORY;
     }
   };
 
@@ -177,16 +352,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentUser) {
       loginTrigger?.classList.add('is-hidden');
       userMenu?.classList.remove('is-hidden');
-      userName.textContent = currentUser.name || 'Siemens User';
-      userEmail.textContent = currentUser.email || '';
-      userAvatar.src = currentUser.picture || 'https://www.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png';
-      userAvatar.alt = `${currentUser.name || currentUser.email} 프로필 이미지`;
+      if (userName) userName.textContent = currentUser.name || 'Siemens User';
+      if (userEmail) userEmail.textContent = currentUser.email || '';
+      if (userAvatar) {
+        userAvatar.src = currentUser.picture || 'https://www.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png';
+        userAvatar.alt = `${currentUser.name || currentUser.email} 프로필 이미지`;
+      }
     } else {
       loginTrigger?.classList.remove('is-hidden');
       userMenu?.classList.add('is-hidden');
-      userAvatar.removeAttribute('src');
-      userName.textContent = 'Guest';
-      userEmail.textContent = '';
+      userAvatar?.removeAttribute('src');
+      if (userName) userName.textContent = 'Guest';
+      if (userEmail) userEmail.textContent = '';
     }
 
     updateAskAccess();
@@ -317,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const category = document.getElementById('questionCategory')?.value?.trim();
+    const category = questionCategoryField?.value?.trim();
     const title = document.getElementById('questionTitle')?.value?.trim();
     const content = document.getElementById('questionContent')?.value?.trim();
 
@@ -335,24 +512,26 @@ document.addEventListener('DOMContentLoaded', () => {
       createdAt: new Date().toISOString(),
       authorName: currentUser.name || 'Siemens User',
       authorEmail: currentUser.email || '',
-      authorPicture: currentUser.picture || ''
+      authorPicture: currentUser.picture || '',
+      replyCount: 0
     });
 
     saveQuestions(questions);
-    renderQuestions();
+    refreshQuestionDrivenUI();
     setQuestionStatus('질문이 등록되었습니다.', 'success');
 
     window.setTimeout(() => {
       closeQuestionModal();
-      questionList?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const targetList = forumQuestionList || questionList;
+      targetList?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 500);
   };
 
-  tabs.forEach(tab => {
+  tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      tabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
+      tabs.forEach((item) => {
+        item.classList.remove('active');
+        item.setAttribute('aria-selected', 'false');
       });
       tab.classList.add('active');
       tab.setAttribute('aria-selected', 'true');
@@ -404,12 +583,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   navLinks.forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', function (event) {
       const targetSelector = this.getAttribute('href');
       const target = document.querySelector(targetSelector);
       if (!target) return;
 
-      e.preventDefault();
+      event.preventDefault();
       closeMobileMenu();
       setActiveNavLink(targetSelector);
       const top = target.getBoundingClientRect().top + window.pageYOffset - getStickyOffset();
@@ -461,6 +640,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  forumSortSelect?.addEventListener('change', renderForumCategoryPage);
+
   loginTrigger?.addEventListener('click', () => openAuthModal());
   logoutBtn?.addEventListener('click', handleLogout);
   authClose?.addEventListener('click', closeAuthModal);
@@ -494,6 +675,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   renderUser(loadUser());
-  renderQuestions();
+  refreshQuestionDrivenUI();
   initGoogleSignIn();
 });

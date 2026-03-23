@@ -1467,3 +1467,18 @@ footer {
     align-items: flex-start;
   }
 }
+
+
+.forum-empty-state {
+  border-style: dashed;
+  box-shadow: none;
+  color: #5b6578;
+}
+
+.forum-question-list:empty + .forum-empty-state {
+  display: block;
+}
+
+.forum-question-list:not(:empty) + .forum-empty-state {
+  display: none;
+}
