@@ -9,7 +9,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2535043174275075" crossorigin="anonymous"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body data-google-client-id="1000526261655-odq54qk5b8e4jkg72g7velvd3a2fp7uc.apps.googleusercontent.com" data-apps-script-url="https://script.google.com/macros/s/AKfycbznHXNoRbFIjArKnqRX2U7B5SVUgsxsS1bhaTOVXBGDyqyCNfTadQxNCJcMjl18F_Zs/exec">
+<body data-google-client-id="1000526261655-odq54qk5b8e4jkg72g7velvd3a2fp7uc.apps.googleusercontent.com" data-apps-script-url="https://script.google.com/macros/s/AKfycbzPd1YgNmoY3ubuad5IabiivxdWzDc0UHVnlQ1MKoy5XRumd4sqRzK_1Sdgph8myPCLEA/exec">
 
   <header class="topnav">
     <div class="container row">
@@ -43,13 +43,15 @@
             <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
           </div>
         </div>
+
+        <a class="top-inquiry-btn" href="mailto:hj.kim@siemens.com?subject=%EC%A0%9C%ED%92%88%20%EA%B5%AC%EB%A7%A4%20%EB%AC%B8%EC%9D%98&body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94.%20%EC%A0%9C%ED%92%88%20%EA%B5%AC%EB%A7%A4%20%EA%B4%80%EB%A0%A8%20%EB%AC%B8%EC%9D%98%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4.%0A%0A-%20%ED%9A%8C%EC%82%AC%EB%AA%85%3A%0A-%20%EB%8B%B4%EB%8B%B9%EC%9E%90%EB%AA%85%3A%0A-%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A-%20%EB%AC%B8%EC%9D%98%20%EC%A0%9C%ED%92%88%3A%0A-%20%EB%82%B4%EC%9A%A9%3A%0A">제품구매문의</a>
       </div>
     </div>
   </header>
 
   <section class="hero">
     <div class="container">
-      <h1>한국지멘스 커뮤니티 포럼 <span class="stats-count">(102)</span></h1>
+      <h1>한국지멘스 커뮤니티 포럼 <span id="communityForumCount" class="stats-count">(0)</span></h1>
       <p class="hero-subtext">Google 계정으로 간편하게 가입하고 로그인하여 Siemens 사용자들과 기술 지식을 공유하세요.</p>
       <div class="hero-search">
         <input type="text" placeholder="Search the community for answers..." aria-label="Search the community" />
@@ -58,15 +60,6 @@
     </div>
   </section>
 
-  <div class="container ad-wrap">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2535043174275075"
-         data-ad-slot="default"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
 
   <div class="toolbar">
     <div class="container row">
@@ -77,6 +70,7 @@
       <div class="actions-right">
         <button id="askCommunityBtn" class="btn-primary ask-btn" type="button" aria-haspopup="dialog" aria-controls="questionModal">Ask the Community</button>
         <p id="askAccessHint" class="ask-access-hint" aria-live="polite">회원 전용 기능입니다. 로그인 후 질문을 작성할 수 있습니다.</p>
+        <a class="btn-secondary toolbar-purchase-btn" href="mailto:hj.kim@siemens.com?subject=%EC%A0%9C%ED%92%88%20%EA%B5%AC%EB%A7%A4%20%EB%AC%B8%EC%9D%98&body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94.%20%EC%A0%9C%ED%92%88%20%EA%B5%AC%EB%A7%A4%20%EA%B4%80%EB%A0%A8%20%EB%AC%B8%EC%9D%98%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4.%0A%0A-%20%ED%9A%8C%EC%82%AC%EB%AA%85%3A%0A-%20%EB%8B%B4%EB%8B%B9%EC%9E%90%EB%AA%85%3A%0A-%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A-%20%EB%AC%B8%EC%9D%98%20%EC%A0%9C%ED%92%88%3A%0A-%20%EB%82%B4%EC%9A%A9%3A%0A">제품구매문의</a>
       </div>
     </div>
   </div>
@@ -124,7 +118,6 @@
             <a href="#">Modbus</a>
             <a href="#">Cloud SAPRO</a>
           </div>
-          <a class="cat-entry-link" href="climatix.html">Climatix 포럼으로 이동</a>
         </div>
         <div class="cat-stats">
           <div class="stat-box"><span class="data-val">0</span> <span class="stat-label">REPLIES</span></div>
@@ -147,7 +140,6 @@
             <a href="#">Calibration</a>
             <a href="#">Installation</a>
           </div>
-          <a class="cat-entry-link" href="hvac.html">HVAC Instrument 포럼으로 이동</a>
         </div>
         <div class="cat-stats">
           <div class="stat-box"><span class="data-val">0</span> <span class="stat-label">REPLIES</span></div>
@@ -169,7 +161,6 @@
             <a href="#">Manuals</a>
             <a href="#">Dimension</a>
           </div>
-          <a class="cat-entry-link" href="datasheet.html">Data Sheet 포럼으로 이동</a>
         </div>
         <div class="cat-stats">
           <div class="stat-box"><span class="data-val">0</span> <span class="stat-label">REPLIES</span></div>
@@ -191,7 +182,6 @@
             <a href="#">Requests</a>
             <a href="#">Rules</a>
           </div>
-          <a class="cat-entry-link" href="others.html">기타 포럼으로 이동</a>
         </div>
         <div class="cat-stats">
           <div class="stat-box"><span class="data-val">0</span> <span class="stat-label">REPLIES</span></div>
@@ -265,6 +255,11 @@
         <label class="field-group">
           <span>제목</span>
           <input id="questionTitle" type="text" maxlength="120" placeholder="예: Climatix BACnet 통신 설정 문의" required />
+        </label>
+        <label id="questionResourceLinkGroup" class="field-group" hidden>
+          <span>자료 링크</span>
+          <input id="questionResourceLink" type="url" inputmode="url" maxlength="500" placeholder="https://example.com/datasheet.pdf" />
+          <small class="field-help">Data Sheet(기술자료) 카테고리에서만 사용됩니다. Google Drive, PDF, 공식 문서 링크를 입력하세요.</small>
         </label>
         <label class="field-group">
           <span>내용</span>

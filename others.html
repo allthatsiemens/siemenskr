@@ -9,7 +9,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2535043174275075" crossorigin="anonymous"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body data-google-client-id="1000526261655-odq54qk5b8e4jkg72g7velvd3a2fp7uc.apps.googleusercontent.com" data-apps-script-url="https://script.google.com/macros/s/AKfycbznHXNoRbFIjArKnqRX2U7B5SVUgsxsS1bhaTOVXBGDyqyCNfTadQxNCJcMjl18F_Zs/exec" data-forum-category="기타">
+<body data-google-client-id="1000526261655-odq54qk5b8e4jkg72g7velvd3a2fp7uc.apps.googleusercontent.com" data-apps-script-url="https://script.google.com/macros/s/AKfycbzPd1YgNmoY3ubuad5IabiivxdWzDc0UHVnlQ1MKoy5XRumd4sqRzK_1Sdgph8myPCLEA/exec" data-forum-category="기타">
   <header class="topnav">
     <div class="container row">
       <a class="brand" href="index.html" aria-label="SIEMENS home">SIEMENS</a>
@@ -123,6 +123,7 @@
           <p>로그인한 회원은 Ask the Community 버튼으로 기타 관련 질문을 바로 등록할 수 있습니다.</p>
           <button id="askCommunityBtn" class="btn-primary ask-btn" type="button" aria-haspopup="dialog" aria-controls="questionModal">Ask the Community</button>
           <p id="askAccessHint" class="ask-access-hint" aria-live="polite">회원 전용 기능입니다. 로그인 후 질문을 작성할 수 있습니다.</p>
+          <a class="side-purchase-btn" href="mailto:hj.kim@siemens.com?subject=%EC%A0%9C%ED%92%88%20%EA%B5%AC%EB%A7%A4%20%EB%AC%B8%EC%9D%98&body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94.%20%EC%A0%9C%ED%92%88%20%EA%B5%AC%EB%A7%A4%20%EA%B4%80%EB%A0%A8%20%EB%AC%B8%EC%9D%98%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4.%0A%0A-%20%ED%9A%8C%EC%82%AC%EB%AA%85%3A%0A-%20%EB%8B%B4%EB%8B%B9%EC%9E%90%EB%AA%85%3A%0A-%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A-%20%EB%AC%B8%EC%9D%98%20%EC%A0%9C%ED%92%88%3A%0A-%20%EB%82%B4%EC%9A%A9%3A%0A">제품구매문의</a>
         </section>
       </aside>
 
@@ -200,6 +201,11 @@
         <label class="field-group">
           <span>제목</span>
           <input id="questionTitle" type="text" maxlength="120" placeholder="예: 커뮤니티 운영 관련 문의" required />
+        </label>
+        <label id="questionResourceLinkGroup" class="field-group" hidden>
+          <span>자료 링크</span>
+          <input id="questionResourceLink" type="url" inputmode="url" maxlength="500" placeholder="https://example.com/datasheet.pdf" />
+          <small class="field-help">Data Sheet(기술자료) 카테고리에서만 사용됩니다. Google Drive, PDF, 공식 문서 링크를 입력하세요.</small>
         </label>
         <label class="field-group">
           <span>내용</span>

@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznHXNoRbFIjArKnqRX2U7B5SVUgsxsS1bhaTOVXBGDyqyCNfTadQxNCJcMjl18F_Zs/exec';
+const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPd1YgNmoY3ubuad5IabiivxdWzDc0UHVnlQ1MKoy5XRumd4sqRzK_1Sdgph8myPCLEA/exec';
 
 const jsonHeaders = {
   'content-type': 'application/json; charset=utf-8',
